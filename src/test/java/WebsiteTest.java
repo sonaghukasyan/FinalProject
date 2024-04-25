@@ -1,12 +1,12 @@
 import assertions.LoginPageTestAssertions;
 import assertions.ProductDetailsTestAssertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class WebsiteTest extends BaseTest{
     @Test
@@ -14,10 +14,10 @@ public class WebsiteTest extends BaseTest{
         navigateToHomePage();
         homePage.navigateToLoginPage();
         // Assert if the current URL is equal to the expected URL
-         assertEquals(driver.getCurrentUrl(),"https://demo.nopcommerce.com/login?returnUrl=%2F",
-                      LoginPageTestAssertions.loginNavigationMessage );
+        assertEquals(LoginPageTestAssertions.loginNavigationMessage,"https://demo.nopcommerce.com/login?returnUrl=%2F",
+                     driver.getCurrentUrl() );
         // Assert that the login page is displayed properly
-        assertTrue(loginPage.isLoginPageDisplayed(), LoginPageTestAssertions.loginPageIsNotProperlyDisplayed);
+        assertTrue(loginPage.isLoginPageDisplayed());
     }
 
     @Test
@@ -28,7 +28,7 @@ public class WebsiteTest extends BaseTest{
         loginPage.setPassword("288858");
         loginPage.clickLoginButton();
         // Assert that NO error message is displayed
-        assertFalse(loginPage.isErrorMessageDisplayed(), LoginPageTestAssertions.validLoginFailed);
+        assertFalse(loginPage.isErrorMessageDisplayed());
     }
 
     @Test
@@ -40,9 +40,9 @@ public class WebsiteTest extends BaseTest{
         loginPage.clickLoginButton();
 
         // Assert that login fails and error message is displayed
-        assertTrue(loginPage.isErrorMessageDisplayed(), LoginPageTestAssertions.invalidLoginMessageVisibility);
-        assertEquals(loginPage.getErrorMessage(), "Login was unsuccessful. Please correct the errors and try again.\nNo customer account found",
-                LoginPageTestAssertions.invalidLoginMessageText);
+        assertTrue(loginPage.isErrorMessageDisplayed());
+        assertEquals(LoginPageTestAssertions.invalidLoginMessageText, "Login was unsuccessful. Please correct the errors and try again.\nNo customer account found",
+                     loginPage.getErrorMessage());
 
     }
 
@@ -50,6 +50,7 @@ public class WebsiteTest extends BaseTest{
     public void testValidAdditionToCart(){
         navigateToHomePage();
         homePage.navigateToProductDetails(4);
+        productDetailsPage.initProductFields();
         productDetailsPage.setProductQuantity("2");
         productDetailsPage.addToCart();
         assertTrue(productDetailsPage.isAddedToCart());
@@ -59,9 +60,10 @@ public class WebsiteTest extends BaseTest{
     public void testInvalidAdditionToCart(){
         navigateToHomePage();
         homePage.navigateToProductDetails(4);
+        productDetailsPage.initProductFields();
         productDetailsPage.setProductQuantity("0");
         productDetailsPage.addToCart();
-        assertFalse(productDetailsPage.isAddedToCart(), ProductDetailsTestAssertions.addedToCartInvalidQuantity);
+        assertFalse(productDetailsPage.isAddedToCart());
     }
 
     @Test
@@ -85,8 +87,8 @@ public class WebsiteTest extends BaseTest{
         }
 
         homePage.navigateToProductDetails(4);
-        assertEquals(driver.getCurrentUrl(),"https://demo.nopcommerce.com/apple-macbook-pro-13-inch",
-                ProductDetailsTestAssertions.invalidProductUrl);
+        assertEquals(ProductDetailsTestAssertions.invalidProductUrl,"https://demo.nopcommerce.com/apple-macbook-pro-13-inch",
+                    driver.getCurrentUrl());
 
         productDetailsPage.initProductFields();
         productDetailsPage.scroll();

@@ -1,18 +1,22 @@
 import com.google.common.io.Files;
+import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.BeforeClass;
+import org.junit.runner.Description;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.ProductDetailsPage;
 
 import java.io.File;
 import java.io.IOException;
-import org.testng.ITestResult;
+import java.time.Duration;
 
 public class BaseTest {
     protected static WebDriver driver;
@@ -20,7 +24,7 @@ public class BaseTest {
     protected static LoginPage loginPage;
     protected static ProductDetailsPage productDetailsPage;
 
-    @BeforeAll
+    @BeforeClass
     public static void setUp() {
         System.setProperty("chromedriver.exe", "drivers/chromedriver-win32/");
         driver = new ChromeDriver();
@@ -30,22 +34,23 @@ public class BaseTest {
         productDetailsPage = new ProductDetailsPage(driver);
     }
 
-    @AfterMethod
-    public void recordFailure(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()) {
-            var camera = (TakesScreenshot)driver;
-            File screenshot = camera.getScreenshotAs(OutputType.FILE);
+    @After
+    public void recordFailure() {
+        Description description = Description.createTestDescription(BaseTest.class, "recordFailure");
+
+        var result = driver instanceof TakesScreenshot ? (TakesScreenshot) driver : null;
+        if (result != null) {
+            File screenshot = result.getScreenshotAs(OutputType.FILE);
             try {
-                Files.move(screenshot, new File("resources/screenshots/" + result.getName() + ".png"));
-            }
-            catch(IOException e) {
+                Files.move(screenshot, new File("resources/screenshots/" + description.getMethodName() + ".png"));
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
     @AfterClass
-    public void tearDown(){
+    public static void tearDown(){
         driver.quit();
     }
 
