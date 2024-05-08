@@ -3,35 +3,33 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.Description;
-import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import pages.HomePage;
-import pages.LoginPage;
-import pages.ProductDetailsPage;
-
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class BaseTest {
     protected static WebDriver driver;
     protected static HomePage homePage;
-    protected static LoginPage loginPage;
-    protected static ProductDetailsPage productDetailsPage;
 
     @BeforeClass
-    public static void setUp() {
-        System.setProperty("chromedriver.exe", "drivers/chromedriver-win32/");
-        driver = new ChromeDriver();
+    public static void setUp() throws MalformedURLException {
+        ChromeOptions options = new ChromeOptions();
+        //EdgeOptions options = new EdgeOptions();
+        //FirefoxOptions options = new FirefoxOptions();
+        String gridHubUrl = "http://localhost:4444/wd/hub";
+        driver = new RemoteWebDriver(new URL(gridHubUrl), options);
         driver.get("https://demo.nopcommerce.com/");
         homePage = new HomePage(driver);
-        loginPage = new LoginPage(driver);
-        productDetailsPage = new ProductDetailsPage(driver);
     }
 
     @After
@@ -47,11 +45,6 @@ public class BaseTest {
                 e.printStackTrace();
             }
         }
-    }
-
-    @AfterClass
-    public static void tearDown(){
-        driver.quit();
     }
 
     protected void navigateToHomePage(){

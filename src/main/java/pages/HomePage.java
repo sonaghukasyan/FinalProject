@@ -1,7 +1,6 @@
 package pages;
 
 import locators.HomePageLocators;
-import locators.LoginPageLocators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,11 +17,12 @@ public class HomePage extends BasePage{
         super(driver);
     }
 
-    public void navigateToLoginPage(){
+    public LoginPage navigateToLoginPage(){
         if(isLoggedIn()){
             logout();
         }
         click(loginButton);
+        return new LoginPage(driver);
     }
 
     public void scrollToProductSection(){
@@ -34,10 +34,11 @@ public class HomePage extends BasePage{
         return itemsList;
     }
 
-    public void navigateToProductDetails(int productIndex){
+    public ProductDetailsPage navigateToProductDetails(int productIndex){
         List<WebElement> itemsList = driver.findElements(productItems);
         WebElement productElement = itemsList.get(productIndex);
         click(productElement);
+        return new ProductDetailsPage(driver);
     }
 
     public boolean isLoggedIn(){
