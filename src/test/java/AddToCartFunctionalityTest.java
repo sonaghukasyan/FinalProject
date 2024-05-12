@@ -18,7 +18,7 @@ public class AddToCartFunctionalityTest extends BaseTest {
 
     @DataProvider
     public static Object[][] invalidQnt() {
-        return dataprovider.INVALID_QUANTITY_ADD_TO_CART;
+        return dataprovider.INVALID_QUANTITY;
     }
 
     @BeforeMethod

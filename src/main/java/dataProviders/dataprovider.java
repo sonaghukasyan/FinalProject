@@ -23,7 +23,7 @@ public class dataprovider {
             {4}
     };
 
-    public static Object[][] INVALID_QUANTITY_ADD_TO_CART = new Object[][]{
+    public static Object[][] INVALID_QUANTITY = new Object[][]{
             {0},
             {-1},
             {1}

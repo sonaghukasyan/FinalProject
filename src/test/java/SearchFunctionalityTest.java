@@ -26,8 +26,8 @@ public class SearchFunctionalityTest extends BaseTest{
         Assert.assertTrue(searchResultPage.isInvalidSearchWarningMessageDisplayed(), SearchFunctionalityTestAssertions.searchTestFailAssertion);
     }
 
-    //@Test
-   // @Parameters("searchText")
+    @Test
+    @Parameters("searchText")
     public void noResultSearchTest(String searchText) {
         searchResultPage = homePage.performSearch(searchText);
         Assert.assertTrue(searchResultPage.isNoResultMessageDisplayed(), SearchFunctionalityTestAssertions.searchTestFailAssertion);
