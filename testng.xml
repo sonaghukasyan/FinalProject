@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="Default Suite" verbose="1">
+    <test name="NoResult1">
+        <parameter name="searchText" value="сйкдфксд"/>
+        <classes>
+            <class name="SearchFunctionalityTest">
+                <methods>
+                    <include name="noResultSearchTest"/>
+                </methods>
+            </class>
+        </classes>
+
+    </test>
+    <test name="NoResult2">
+        <parameter name="searchText" value="աասդփփճրկասդշշասֆասֆսդ"/>
+        <classes>
+            <class name="SearchFunctionalityTest">
+                <methods>
+                    <include name="noResultSearchTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

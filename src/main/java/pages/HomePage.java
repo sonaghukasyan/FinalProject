@@ -1,6 +1,7 @@
 package pages;
 
 import locators.HomePageLocators;
+import locators.ProductDetailsLocators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,21 +9,15 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class HomePage extends BasePage{
-    private By loginButton = By.className(HomePageLocators.loginButton);
     private By productSection = By.xpath(HomePageLocators.productSectionXPath);
     private By productItems = By.xpath(HomePageLocators.productItemsXPath);
-    private final By logoutButton = By.xpath(HomePageLocators.logoutXPath);
+    private By searchTextField = By.cssSelector(HomePageLocators.searchFieldCSS);
+    private By searchButton = By.xpath(HomePageLocators.searchButtonXPath);
+    private By cartButton = By.cssSelector(HomePageLocators.shoppingCartCSS);
+    private By productTitle = By.cssSelector(HomePageLocators.productTitle);
 
     public HomePage(WebDriver driver) {
         super(driver);
-    }
-
-    public LoginPage navigateToLoginPage(){
-        if(isLoggedIn()){
-            logout();
-        }
-        click(loginButton);
-        return new LoginPage(driver);
     }
 
     public void scrollToProductSection(){
@@ -41,17 +36,30 @@ public class HomePage extends BasePage{
         return new ProductDetailsPage(driver);
     }
 
-    public boolean isLoggedIn(){
-        try{
-            driver.findElement(logoutButton);
-            return true;
-        }
-        catch (Exception ex){
-            return false;
-        }
+    public void setSearchText(String searchText) {
+        WebElement searchEl = driver.findElement(searchTextField);
+        searchEl.clear();
+        searchEl.sendKeys(searchText);
     }
 
-    public void logout(){
-        click(logoutButton);
+    public void clickSearchButton(){
+        click(searchButton);
+    }
+
+    public SearchResultPage performSearch(String keyword) {
+        setSearchText(keyword);
+        clickSearchButton();
+        return new SearchResultPage(driver);
+    }
+
+    public ProductDetailsPage navigateToProductDetailsWithUrl(String url){
+        driver.navigate().to(url);
+        return new ProductDetailsPage(driver);
+    }
+
+    public ShoppingCartPage navigateToShoppingCart(){
+        waitForVisibilityOfElementLocated(cartButton);
+        click(cartButton);
+        return new ShoppingCartPage(driver);
     }
 }
