@@ -16,6 +16,7 @@ import pages.HomePage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 public class BaseTest {
     protected static WebDriver driver;
@@ -23,15 +24,11 @@ public class BaseTest {
 
     @BeforeTest
     public static void setUp() throws MalformedURLException {
-       // ChromeOptions options = new ChromeOptions();
+        ChromeOptions options = new ChromeOptions();
         //EdgeOptions options = new EdgeOptions();
         //FirefoxOptions options = new FirefoxOptions();
-       // String gridHubUrl = "http://localhost:4444/wd/hub";
-       // driver = new RemoteWebDriver(new URL(gridHubUrl), options);
-       // driver.get("https://demo.nopcommerce.com/");
-        //homePage = new HomePage(driver);
-        System.setProperty("chromedriver.exe", "drivers/chromedriver-win32/");
-        driver = new ChromeDriver();
+        String gridHubUrl = "http://localhost:4444/wd/hub";
+        driver = new RemoteWebDriver(new URL(gridHubUrl), options);
         driver.get("https://demo.nopcommerce.com/");
         homePage = new HomePage(driver);
     }
