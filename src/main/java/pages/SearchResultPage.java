@@ -1,6 +1,7 @@
 package pages;
 import locators.SearchResultPageLocators;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
@@ -43,10 +44,6 @@ public class SearchResultPage extends BasePage{
     }
 
     public boolean compareSearchResultsAgainstKeyword(String keyword) {
-        if(isNoResultMessageDisplayed() || isInvalidSearchWarningMessageDisplayed()){
-            return false;
-        }
-
         // Find all elements with the class name "product-title"
         List<WebElement> productTitlesElements = driver.findElements(productTitles);
         // Iterate through each element and extract the text
@@ -75,44 +72,25 @@ public class SearchResultPage extends BasePage{
     }
 
     public boolean pricesSorted(boolean ascendingOrder){
-        if(isNoResultMessageDisplayed() || isInvalidSearchWarningMessageDisplayed()){
-            return false;
-        }
-
         // Find all prices
         List<WebElement> priceElements = driver.findElements(productPrices);
         // List to store prices as doubles
         List<Double> prices = new ArrayList<>();
 
+        double pricePrevious = Double.parseDouble(priceElements.get(0).getText().replaceAll("[^0-9.]", ""));
+
         for (WebElement priceElement : priceElements) {
             // Remove non-numeric characters
             String priceText = priceElement.getText().replaceAll("[^0-9.]", "");
             double price = Double.parseDouble(priceText);
+            if(ascendingOrder && price < pricePrevious){
+                return false;
+            }
+            else if(!ascendingOrder && price > pricePrevious){
+                return false;
+            }
+            pricePrevious = price;
             prices.add(price);
-        }
-
-        if(ascendingOrder){
-            return isSortedAscending(prices);
-        }
-        else{
-            return isSortedDescending(prices);
-        }
-    }
-
-    private static boolean isSortedAscending(List<Double> list) {
-        for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) < list.get(i - 1)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean isSortedDescending(List<Double> list) {
-        for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) > list.get(i - 1)) {
-                return false;
-            }
         }
         return true;
     }
