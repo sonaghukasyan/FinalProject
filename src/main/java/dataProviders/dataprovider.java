@@ -18,9 +18,10 @@ public class dataprovider {
             {"."}
     };
 
-    public static Object[][] VALID_QUANTITY_ADD_TO_CART_MAC = new Object[][]{
-            {2},
-            {4}
+    public static Object[][] VALID_QUANTITY_ADD_TO_CART = new Object[][]{
+            {2, 4},
+            {4, 4},
+            {4, 5}
     };
 
     public static Object[][] INVALID_QUANTITY = new Object[][]{

@@ -13,7 +13,7 @@ public class AddToCartFunctionalityTest extends BaseTest {
 
     @DataProvider
     public static Object[][] validQnt() {
-        return dataprovider.VALID_QUANTITY_ADD_TO_CART_MAC;
+        return dataprovider.VALID_QUANTITY_ADD_TO_CART;
     }
 
     @DataProvider
@@ -31,8 +31,8 @@ public class AddToCartFunctionalityTest extends BaseTest {
     }
 
     @Test(description = "add to cart test with valid quantities and check cart fields.", groups = {"addToCart"}, dataProvider = "validQnt")
-    public void testValidAdditionToCart(int quantity){
-        productDetailsPage = homePage.navigateToProductDetails(4);
+    public void testValidAdditionToCart(int quantity, int productIndex){
+        productDetailsPage = homePage.navigateToProductDetails(productIndex);
         productDetailsPage.setProductQuantity(quantity);
         productDetailsPage.addToCart();
         String productName =  productDetailsPage.getProductName();
